@@ -57,7 +57,7 @@ if __name__ == "__main__":
 		if not os.path.isfile(youtube_client_secrets):
 			raise Exception('Google settings')
 	except Exception as e:
-		print >> sys.stderr, '[-] {0}'.format(e)
+		print('[-] {0}'.format(e), file=sys.stderr)
 		OSXUtils.notify(APP_NAME, 'error', 'unable to to read config')
 		sys.exit(-1)
 
@@ -65,15 +65,16 @@ if __name__ == "__main__":
 		youtube = YoutubeUtils.YoutubeAPI(args, youtube_client_secrets, youtube_storage_path)
 		y_items = youtube.getSubscriptions(youtube_channel_id)
 		if len(y_items) == 0:
-			print >> sys.stderr, '[-] unable to get YouTube subscriptions'
+			print('[-] unable to get YouTube subscriptions', file=sys.stderr)
 			OSXUtils.notify(APP_NAME, 'error', 'unable to get YouTube subscriptions')
 			sys.exit(-1)
 		#if len(y_items) > feedly.rss_max_count:
 		#	print >> sys.stderr, '[-] YouTube subscriptions number more than Feedly limit'
+		#	print('[-] YouTube subscriptions number more than Feedly limit', file=sys.stderr)
 		#	OSXUtils.notify(APP_NAME, 'error', 'YouTube subscriptions number more than Feedly limit')
 		#	sys.exit(-1)
 	except Exception as e:
-		print >> sys.stderr, '[-] {0}'.format(e)
+		print('[-] {0}'.format(e), file=sys.stderr)
 		OSXUtils.notify(APP_NAME, 'error', 'unable to get YouTube subscriptions')
 		sys.exit(-1)
 
@@ -81,16 +82,16 @@ if __name__ == "__main__":
 		feedly = Feedly(feedly_access_token)
 		f_items = feedly.getSubscriptions()
 		if len(f_items) == 0:
-			print >> sys.stderr, '[-] unable to get feedly subscriptions'
+			print('[-] unable to get feedly subscriptions', file=sys.stderr)
 			OSXUtils.notify(APP_NAME, 'error', 'unable to get feedly subscriptions')
 			sys.exit(-1)
 		f_res = filterSubscriptions(FEEDLY_RSS_FOLDER, f_items, y_items)
 		if len(f_items) - len(f_res[0]) + len(f_res[1]) > feedly.rss_max_count:
-			print >> sys.stderr, '[-] subscriptions number more than Feedly limit'
+			print('[-] subscriptions number more than Feedly limit', file=sys.stderr)
 			OSXUtils.notify(APP_NAME, 'error', 'subscriptions number more than Feedly limit')
 			sys.exit(-1)
 	except Exception as e:
-		print >> sys.stderr, '[-] {0}'.format(e)
+		print('[-] {0}'.format(e), file=sys.stderr)
 		OSXUtils.notify(APP_NAME, 'error', 'unable to get Feedly subscriptions, try to refresh Feedly access token')
 		sys.exit(-1)
 
@@ -117,12 +118,12 @@ if __name__ == "__main__":
 			print('[+] synchronized')
 			OSXUtils.notify(APP_NAME, 'success', 'synchronized')
 	except Exception as e:
-		print >> sys.stderr, '[-] {0}'.format(e)
+		print('[-] {0}'.format(e), file=sys.stderr)
 		OSXUtils.notify(APP_NAME, 'error', 'unable to sync')
 		sys.exit(-1)	
 
 	if not_good:
-		print >> sys.stderr, '[-] not good'
+		print('[-] not good', file=sys.stderr)
 		sys.exit(-1)
 
 	sys.exit(0)
